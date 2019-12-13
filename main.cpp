@@ -46,7 +46,39 @@ p_data ajoutDevant(DATATYPE uneval, p_data chain){
     // Fin
 }
 
+// Ajouter une maille en queue
+p_data ajoutDerriere(DATATYPE uneval, p_data chain){
+    // Variables
+    p_data maille;
+
+    
+    // Début
+    maille = chain;
+    
+    // S'il y a au moins 1 élément
+    if(maille != nullptr){
+      // Trouver la queue
+      while ((*maille).suiv != nullptr)
+      {
+        maille = (*maille).suiv;
+      }
+
+      // Ajouter la nouvelle maille en queue
+      maille->suiv = new data;
+      maille->suiv->valeur = uneval;
+      maille->suiv->suiv = nullptr;
+    }else{
+      chain = new data;
+      chain->valeur = uneval;
+      chain->suiv = nullptr;
+    }
+
+    return chain;
+    // Fin
+}
+
 // Créer une chaîne, ajouter des mailles avec les valeurs jusqu'a ce que cette valeur soit sentinelle
+// Ajout en tête
 p_data saisieBorne(DATATYPE sentinelle){
     // Variables
     p_data head;
@@ -68,6 +100,7 @@ p_data saisieBorne(DATATYPE sentinelle){
 }
 
 // Créer un chaînage de nb mailles
+// Ajout en tête
 p_data saisieNombre(int nb){
     // Variables
     p_data head;
@@ -106,9 +139,10 @@ p_data fusion(p_data head, p_data middle){
   // Début
   // Vérifier que les chaînes ne soient pas vides
   if(head != nullptr && middle != nullptr){
-    // Placer la tête de la chaîne fusionné sur la plus grande valeur des 2 têtes
     left = head;
     right = middle;
+    
+    // Placer la tête de la chaîne fusionné sur la plus grande valeur des 2 têtes
     if((*head).valeur < (*middle).valeur){
       head = middle;
       right = (*right).suiv;
@@ -117,7 +151,8 @@ p_data fusion(p_data head, p_data middle){
     }
     actual = head;
 
-    while (left != middle && right != nullptr)
+    // Tant qu'il reste des éléments dans les 2 chaînes on ajoute
+    while (left != nullptr && right != nullptr)
     {
       if((*left).valeur < (*right).valeur){
         (*actual).suiv = left;
@@ -129,7 +164,7 @@ p_data fusion(p_data head, p_data middle){
       actual = (*actual).suiv;
     }
 
-    while (left != middle)
+    while (left != nullptr)
     {
       (*actual).suiv = left;
       left = (*left).suiv;
@@ -172,19 +207,28 @@ int main(){
     
     aff(test); */
 
+
+    // Tests ajoutDerriere() / Ajoute bien dans l'ordre
+    p_data test = (p_data) malloc(sizeof(data));
+    test->suiv = nullptr;
+    test->valeur = 1;
+    test = ajoutDerriere(3, ajoutDerriere(2, test));
+    aff(test);
+    
     
     // Tests saisieBorne()
     // aff(saisieBorne(0));
 
     
     // Tests saisieNombre()
-    /* aff(saisieNombre(0));
-    aff(saisieNombre(1));
-    aff(saisieNombre(3)); */
+    // aff(saisieNombre(0));
+    // aff(saisieNombre(1));
+    // aff(saisieNombre(3));
 
 
     // Tests fusion()
-    aff(fusion(saisieNombre(1), saisieNombre(1)));
-    // aff(fusion(saisieNombre(2), saisieNombre(2)));
-    // aff(fusion(saisieNombre(3), saisieNombre(3)));
+    // aff(fusion(saisieNombre(1), saisieNombre(1))); // 1 seul élement par chaîne
+    // aff(fusion(saisieNombre(2), saisieNombre(2))); // Plusieurs élements par chaîne
+    // aff(fusion(nullptr, saisieNombre(3))); // 1 chaîne avec des éléments, l'autre pas
+    // aff(fusion(saisieNombre(1), saisieNombre(3))); // 1 chaîne avec 1 élément, l'autre plusieurs
 }
