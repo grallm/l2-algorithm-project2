@@ -46,37 +46,6 @@ p_data ajoutDevant(DATATYPE uneval, p_data chain){
     // Fin
 }
 
-// Ajouter une maille en queue
-p_data ajoutDerriere(DATATYPE uneval, p_data chain){
-    // Variables
-    p_data maille;
-
-    
-    // Début
-    maille = chain;
-    
-    // S'il y a au moins 1 élément
-    if(maille != nullptr){
-      // Trouver la queue
-      while ((*maille).suiv != nullptr)
-      {
-        maille = (*maille).suiv;
-      }
-
-      // Ajouter la nouvelle maille en queue
-      maille->suiv = new data;
-      maille->suiv->valeur = uneval;
-      maille->suiv->suiv = nullptr;
-    }else{
-      chain = new data;
-      chain->valeur = uneval;
-      chain->suiv = nullptr;
-    }
-
-    return chain;
-    // Fin
-}
-
 // Créer une chaîne, ajouter des mailles avec les valeurs jusqu'a ce que cette valeur soit sentinelle
 // Ajout en tête
 p_data saisieBorne(DATATYPE sentinelle){
@@ -99,9 +68,8 @@ p_data saisieBorne(DATATYPE sentinelle){
     // Fin
 }
 
-// Créer un chaînage de nb mailles
-// Ajout en tête
-p_data saisieNombre(int nb){
+// Créer un chaînage de nb mailles récursivement
+p_data saisieNombreR(int nb){
     // Variables
     p_data head;
     DATATYPE val;
@@ -110,18 +78,17 @@ p_data saisieNombre(int nb){
     head = nullptr;
 
     if(nb != 0){
-        head = new data;
+      if(nb == 1){
+        cout << nb << " valeur restantes: ";
+        cin >> val;
+        return ajoutDevant(val, nullptr);
 
-        // Première valeur qui sera la queue avec suiv nullptr
-        cout << "Valeur (" << 1 << "/" << nb <<"): ";
-        cin >> head->valeur;
-        head->suiv = nullptr;
+      }else{
+        cout << nb << " valeur restantes: ";
+        cin >> val;
 
-        for(int i=1; i<nb; i++){
-            cout << "Valeur (" << i+1 << "/" << nb <<"): ";
-            cin >> val;
-            head = ajoutDevant(val, head);
-        }
+        return ajoutDevant(val, saisieNombreR(--nb));
+      }
     }
 
     return head;
@@ -209,11 +176,11 @@ int main(){
 
 
     // Tests ajoutDerriere() / Ajoute bien dans l'ordre
-    p_data test = (p_data) malloc(sizeof(data));
+    /* p_data test = (p_data) malloc(sizeof(data));
     test->suiv = nullptr;
     test->valeur = 1;
     test = ajoutDerriere(3, ajoutDerriere(2, test));
-    aff(test);
+    aff(test); */
     
     
     // Tests saisieBorne()
@@ -224,6 +191,7 @@ int main(){
     // aff(saisieNombre(0));
     // aff(saisieNombre(1));
     // aff(saisieNombre(3));
+    aff(saisieNombreR(3));
 
 
     // Tests fusion()
