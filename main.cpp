@@ -11,7 +11,7 @@ typedef struct _datum{
     DATATYPE valeur;
     _datum * suiv;
 } data;
-typedef data * p_data;
+typedef _datum * p_data;
 
 
 /** TODO
@@ -96,8 +96,59 @@ p_data saisieNombre(int nb){
 }
 
 // Fusionner 2 chaînes avec des éléments triés par ordre croissant, retourner la chaîne triée résultante
-p_data fusion(p_data prem, p_data sec){
+/** Préconditions
+*/
+// Postconditions
+p_data fusion(p_data head, p_data middle){
+  // Variables
+  p_data left, right, actual; // Elément où l'on est rendu sur la chaîne
 
+  // Début
+  // Vérifier que les chaînes ne soient pas vides
+  if(head != nullptr && middle != nullptr){
+    // Placer la tête de la chaîne fusionné sur la plus grande valeur des 2 têtes
+    left = head;
+    right = middle;
+    if((*head).valeur < (*middle).valeur){
+      head = middle;
+      right = (*right).suiv;
+    }else{
+      left = (*left).suiv;
+    }
+    actual = head;
+
+    while (left != middle && right != nullptr)
+    {
+      if((*left).valeur < (*right).valeur){
+        (*actual).suiv = left;
+        left = (*left).suiv;
+      }else{
+        (*actual).suiv = right;
+        right = (*right).suiv;
+      }
+      actual = (*actual).suiv;
+    }
+
+    while (left != middle)
+    {
+      (*actual).suiv = left;
+      left = (*left).suiv;
+      actual = (*actual).suiv;
+    }
+    
+    while (right != nullptr)
+    {
+      (*actual).suiv = right;
+      right = (*right).suiv;
+      actual = (*actual).suiv;
+    }
+
+    return head;
+  }else{
+    // Retourner celle non nulle ou retourner une chaîne vide
+    return (head == nullptr) ? middle : head;
+  }
+  // Fin
 }
 
 
@@ -130,4 +181,10 @@ int main(){
     /* aff(saisieNombre(0));
     aff(saisieNombre(1));
     aff(saisieNombre(3)); */
+
+
+    // Tests fusion()
+    aff(fusion(saisieNombre(1), saisieNombre(1)));
+    // aff(fusion(saisieNombre(2), saisieNombre(2)));
+    // aff(fusion(saisieNombre(3), saisieNombre(3)));
 }
