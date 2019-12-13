@@ -69,7 +69,7 @@ p_data saisieBorne(DATATYPE sentinelle){
 }
 
 // Créer un chaînage de nb mailles récursivement
-p_data saisieNombreR(int nb){
+p_data saisieNombre(int nb){
     // Variables
     p_data head;
     DATATYPE val;
@@ -87,7 +87,7 @@ p_data saisieNombreR(int nb){
         cout << nb << " valeur restantes: ";
         cin >> val;
 
-        return ajoutDevant(val, saisieNombreR(--nb));
+        return ajoutDevant(val, saisieNombre(--nb));
       }
     }
 
@@ -110,7 +110,7 @@ p_data fusion(p_data head, p_data middle){
     right = middle;
     
     // Placer la tête de la chaîne fusionné sur la plus grande valeur des 2 têtes
-    if((*head).valeur < (*middle).valeur){
+    if((*head).valeur > (*middle).valeur){
       head = middle;
       right = (*right).suiv;
     }else{
@@ -131,13 +131,13 @@ p_data fusion(p_data head, p_data middle){
       actual = (*actual).suiv;
     }
 
+    // On ajoute tous les éléments de la chaîne dans laquelle il en reste
     while (left != nullptr)
     {
       (*actual).suiv = left;
       left = (*left).suiv;
       actual = (*actual).suiv;
     }
-    
     while (right != nullptr)
     {
       (*actual).suiv = right;
@@ -191,12 +191,11 @@ int main(){
     // aff(saisieNombre(0));
     // aff(saisieNombre(1));
     // aff(saisieNombre(3));
-    aff(saisieNombreR(3));
 
 
     // Tests fusion()
-    // aff(fusion(saisieNombre(1), saisieNombre(1))); // 1 seul élement par chaîne
-    // aff(fusion(saisieNombre(2), saisieNombre(2))); // Plusieurs élements par chaîne
-    // aff(fusion(nullptr, saisieNombre(3))); // 1 chaîne avec des éléments, l'autre pas
-    // aff(fusion(saisieNombre(1), saisieNombre(3))); // 1 chaîne avec 1 élément, l'autre plusieurs
+    // aff(fusion(saisieNombre(1), saisieNombre(1))); // 1 seul élement par chaîne Ok
+    // aff(fusion(saisieNombre(2), saisieNombre(2))); // Plusieurs élements par chaîne Ok
+    // aff(fusion(nullptr, saisieNombre(3))); // 1 chaîne avec des éléments, l'autre pas Ok
+    aff(fusion(saisieNombre(1), saisieNombre(3))); // 1 chaîne avec 1 élément, l'autre plusieurs
 }
