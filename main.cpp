@@ -175,11 +175,6 @@ p_data fusionR(p_data head, p_data middle){
       return ajoutDevant((*head).valeur, fusionR((*head).suiv, middle));
     }else if((*head).valeur >= (*middle).valeur){
       return ajoutDevant((*middle).valeur, fusionR((*middle).suiv, head));
-    }else{
-      aff(head);
-      aff(middle);
-      cout << "err" << endl;
-      return head;
     }
   }
   // Fin
