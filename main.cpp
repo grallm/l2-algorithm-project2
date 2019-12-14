@@ -1,3 +1,6 @@
+// Projet 2 - Algorithmique et structure de données - Agorithme de tri par fusion multiple de monotonies
+// Malo GRALL et Paul TOMEI - 12/2019
+
 #include <iostream>
 #include <stdio.h>
 
@@ -155,7 +158,6 @@ p_data fusion(p_data head, p_data middle){
   // Fin
 }
 
-
 // Fusion de 2 chaînes triées en ordre croissant
 // Retourne la tête de la chaîne résultante triée
 // Algorithme récursif
@@ -173,10 +175,37 @@ p_data fusionR(p_data head, p_data middle){
       return ajoutDevant((*head).valeur, fusionR(middle, (*head).suiv));
     }else if((*head).valeur < (*middle).valeur){
       return ajoutDevant((*head).valeur, fusionR((*head).suiv, middle));
-    }else if((*head).valeur >= (*middle).valeur){
+    }else{
       return ajoutDevant((*middle).valeur, fusionR((*middle).suiv, head));
     }
   }
+  // Fin
+}
+
+// Retourne le nombre de monotonies d'une chaîne
+int nbCroissances(p_data chain){
+  // Variables
+  int nb;
+  bool inMonot;
+
+  // Début
+  nb = 0;
+  inMonot = false;
+  while (chain != nullptr)
+  {
+    if(!inMonot){
+      inMonot = true;
+      nb++;
+    }
+    if(chain != nullptr){
+      if((*chain).suiv != nullptr && (*chain).valeur > (*(*chain).suiv).valeur){
+        inMonot = false;
+      }
+      chain = (*chain).suiv;
+    }
+  }
+  
+  return nb;
   // Fin
 }
 
@@ -228,5 +257,9 @@ int main(){
     // aff(fusionR(saisieNombre(1), saisieNombre(1))); // 1 seul élement par chaîne Ok
     // aff(fusionR(saisieNombre(2), saisieNombre(2))); // Plusieurs élements par chaîne Ok
     // aff(fusionR(nullptr, saisieNombre(3))); // 1 chaîne avec des éléments, l'autre pas Ok
-    aff(fusionR(saisieNombre(1), saisieNombre(3))); // 1 chaîne avec 1 élément, l'autre plusieurs Ok
+    // aff(fusionR(saisieNombre(1), saisieNombre(3))); // 1 chaîne avec 1 élément, l'autre plusieurs Ok
+
+
+    // Tests nbCroissances()
+    cout << nbCroissances(saisieBorne(0)) << endl;
 }
