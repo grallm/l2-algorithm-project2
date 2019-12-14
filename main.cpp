@@ -96,6 +96,8 @@ p_data saisieNombre(int nb){
 }
 
 // Fusionner 2 chaînes avec des éléments triés par ordre croissant, retourner la chaîne triée résultante
+// Les 2 chaînes initiales seront désordonnées, l'une des 2 têtes sera au milieu de la chaîne
+// Version itérative
 /** Préconditions
 */
 // Postconditions
@@ -109,7 +111,7 @@ p_data fusion(p_data head, p_data middle){
     left = head;
     right = middle;
     
-    // Placer la tête de la chaîne fusionné sur la plus grande valeur des 2 têtes
+    // Placer la tête de la chaîne fusionné sur la plus petite valeur des 2 têtes
     if((*head).valeur > (*middle).valeur){
       head = middle;
       right = (*right).suiv;
@@ -118,7 +120,7 @@ p_data fusion(p_data head, p_data middle){
     }
     actual = head;
 
-    // Tant qu'il reste des éléments dans les 2 chaînes on ajoute
+    // Tant qu'il reste des éléments dans les 2 chaînes on ajoute la plus petite valeur et on décale
     while (left != nullptr && right != nullptr)
     {
       if((*left).valeur < (*right).valeur){
@@ -154,9 +156,37 @@ p_data fusion(p_data head, p_data middle){
 }
 
 
-/** TODO
-p_data fusion(p_data prem, p_data sec){}
+// Fusion de 2 chaînes triées en ordre croissant
+// Retourne la tête de la chaîne résultante triée
+// Algorithme récursif
+p_data fusionR(p_data head, p_data middle){
+  // Variables
 
+  // Début
+  if(head == nullptr && middle == nullptr){
+    return nullptr;
+
+  }else{
+    if(head == nullptr){
+      return ajoutDevant((*middle).valeur, fusionR(head, (*middle).suiv));
+    }else if(middle == nullptr){
+      return ajoutDevant((*head).valeur, fusionR(middle, (*head).suiv));
+    }else if((*head).valeur < (*middle).valeur){
+      return ajoutDevant((*head).valeur, fusionR((*head).suiv, middle));
+    }else if((*head).valeur >= (*middle).valeur){
+      return ajoutDevant((*middle).valeur, fusionR((*middle).suiv, head));
+    }else{
+      aff(head);
+      aff(middle);
+      cout << "err" << endl;
+      return head;
+    }
+  }
+  // Fin
+}
+
+
+/** TODO
 int nbCroissances(p_data chain){}
 
 void extraireCroissance(p_data & chain, p_data & mono){}
@@ -197,5 +227,11 @@ int main(){
     // aff(fusion(saisieNombre(1), saisieNombre(1))); // 1 seul élement par chaîne Ok
     // aff(fusion(saisieNombre(2), saisieNombre(2))); // Plusieurs élements par chaîne Ok
     // aff(fusion(nullptr, saisieNombre(3))); // 1 chaîne avec des éléments, l'autre pas Ok
-    aff(fusion(saisieNombre(1), saisieNombre(3))); // 1 chaîne avec 1 élément, l'autre plusieurs
+    // aff(fusion(saisieNombre(1), saisieNombre(3))); // 1 chaîne avec 1 élément, l'autre plusieurs Ok
+    
+    // Tests fusionR()
+    // aff(fusionR(saisieNombre(1), saisieNombre(1))); // 1 seul élement par chaîne Ok
+    // aff(fusionR(saisieNombre(2), saisieNombre(2))); // Plusieurs élements par chaîne Ok
+    // aff(fusionR(nullptr, saisieNombre(3))); // 1 chaîne avec des éléments, l'autre pas Ok
+    aff(fusionR(saisieNombre(1), saisieNombre(3))); // 1 chaîne avec 1 élément, l'autre plusieurs Ok
 }
