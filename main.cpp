@@ -268,20 +268,31 @@ datalistes initT(int nb){
  * mono.nbmono < capa
  */
 void ajouterFin(p_data chain, datalistes & mono){
+  // Variables
+  
+  // Début
   // On ajoute la chaîne si le tableau n'est pas plein
   if(mono.nbmono < mono.capa){
     mono.monotonies[mono.nbmono] = chain;
     mono.nbmono++;
   }
+  // Fin
 }
 
 // Affiche sur chaque ligne les valeurs d'une case
+/** Préconditions
+ * mono doit être initialisé
+ */
 void affT(datalistes mono){
+  // Variables
+  
+  // Début
   for (int i = 0; i < mono.nbmono; i++)
   {
     aff(mono.monotonies[i]);
   }
   cout << endl;
+  // Fin
 }
 
 // Supprime
@@ -292,6 +303,9 @@ void affT(datalistes mono){
  * Retourne nullptr si mono.nbmono <= 1
  */
 p_data suppressionFin(datalistes & mono){
+  // Variables
+  
+  // Début
   if(mono.nbmono > 0){
     mono.nbmono--; // On "supprime" le dernier élément en abaissant le nombre de cases remplis, on consière la case cuivante inexistante
     if(mono.nbmono > 0){
@@ -299,10 +313,56 @@ p_data suppressionFin(datalistes & mono){
     }
   }
   return nullptr;
+  // Fin
+}
+
+// Supprime toutes les chaînes de mono et les met bout à bout
+/** Préconditions
+ * mono doit être initialisé
+ * mono.nbmono > 0
+ */
+p_data suppressionTotale(datalistes & mono){
+  // Variables
+  p_data tailChain; // Permet d'allaer chercher la queue de la chaîne actuelle pour ajouter la tête de la suivante
+  
+  // Début
+  if(mono.nbmono > 0){
+    /* for (int i = mono.nbmono-1; i > 0; i--)
+    {
+      tailChain = mono.monotonies[i];
+      // On cherche la queue de la chaîne;
+      while ((*tailChain).suiv != nullptr)
+      {
+        tailChain = (*tailChain).suiv;
+      }
+      (*tailChain).suiv = mono.monotonies[i+1]; // La queue de la chaîne pointe vers la tête de la chaîne suivante du tableau
+      
+      mono.nbmono--;
+    }
+    mono.nbmono--;
+    return mono.monotonies[0]; // On retourne le premier élément du tableau qui est "supprimé" */
+
+    
+    for (int i = 0; i < mono.nbmono-1; i++)
+    {
+      tailChain = mono.monotonies[i];
+      // On cherche la queue de la chaîne;
+      while ((*tailChain).suiv != nullptr)
+      {
+        tailChain = (*tailChain).suiv;
+      }
+      (*tailChain).suiv = mono.monotonies[i+1]; // La queue de la chaîne pointe vers la tête de la chaîne suivante du tableau
+      
+      mono.nbmono--;
+    }
+    mono.nbmono = 0;
+    return mono.monotonies[0]; // On retourne le premier élément du tableau qui est "supprimé"
+  }
+  return nullptr;
+  // Fin
 }
 
 /* TODO
-p_data suppressionTotale(datalistes & mono)
  */
 // ==========
 
@@ -383,10 +443,26 @@ int main(){
 
 
   // Tests suppressionFin()
-  datalistes monos = initT(5);
+  /* datalistes monos = initT(5);
   ajouterFin(ajoutDevant(1, nullptr), monos);
   ajouterFin(ajoutDevant(1, ajoutDevant(2, ajoutDevant(3, nullptr))), monos);
   affT(monos); // Devrait afficher 1; et 1;2;3; Ok
   aff(suppressionFin(monos)); // Devrait afficher 1; Ok
-  affT(monos); // Devrait afficher 1; Ok
+  affT(monos); // Devrait afficher 1; Ok */
+
+
+  // Tests suppressionTotale()
+  datalistes monos = initT(5);
+  ajouterFin(ajoutDevant(1, nullptr), monos);
+  ajouterFin(ajoutDevant(1, ajoutDevant(2, nullptr)), monos);
+  ajouterFin(ajoutDevant(1, ajoutDevant(2, ajoutDevant(3, nullptr))), monos);
+  affT(monos); // Devrait afficher 1;, 1;2; et 1;2;3; Ok
+  aff(suppressionTotale(monos)); // Devrait afficher 1;1;2;1;2;3; Ok
+  affT(monos); // Devrait rien afficher Ok
+  aff(suppressionTotale(monos)); // Devrait rien Ok
+  ajouterFin(ajoutDevant(1, nullptr), monos);
+  affT(monos); // Devrait rien afficher
+  // cout << monos.nbmono << endl; // Devrait afficher 1 : 5 Ok
+  aff(suppressionTotale(monos)); // Devrait afficher 1;
+  affT(monos); // Devrait rien afficher
 }
