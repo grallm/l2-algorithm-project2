@@ -284,9 +284,24 @@ void affT(datalistes mono){
   cout << endl;
 }
 
+// Supprime
+/** Préconditions
+ * mono.nbmono > 0
+ */
+/** Postconditions
+ * Retourne nullptr si mono.nbmono <= 1
+ */
+p_data suppressionFin(datalistes & mono){
+  if(mono.nbmono > 0){
+    mono.nbmono--; // On "supprime" le dernier élément en abaissant le nombre de cases remplis, on consière la case cuivante inexistante
+    if(mono.nbmono > 0){
+      return mono.monotonies[mono.nbmono-1];
+    }
+  }
+  return nullptr;
+}
+
 /* TODO
-void affT(datalistes mono)
-p_data suppressionFin(datalistes & mono)
 p_data suppressionTotale(datalistes & mono)
  */
 // ==========
@@ -360,9 +375,18 @@ int main(){
 
   
   // Tests affT()
-  datalistes monos = initT(5);
+  /* datalistes monos = initT(5);
   ajouterFin(ajoutDevant(1, nullptr), monos);
   affT(monos); // Devrait afficher la chaîne chain, donc 1; Ok
   ajouterFin(ajoutDevant(1, ajoutDevant(2, ajoutDevant(3, nullptr))), monos);
-  affT(monos); // Devrait afficher la chaîne chain, donc 1; Ok
+  affT(monos); // Devrait afficher 1; et 1;2;3; Ok */
+
+
+  // Tests suppressionFin()
+  datalistes monos = initT(5);
+  ajouterFin(ajoutDevant(1, nullptr), monos);
+  ajouterFin(ajoutDevant(1, ajoutDevant(2, ajoutDevant(3, nullptr))), monos);
+  affT(monos); // Devrait afficher 1; et 1;2;3; Ok
+  aff(suppressionFin(monos)); // Devrait afficher 1; Ok
+  affT(monos); // Devrait afficher 1; Ok
 }
