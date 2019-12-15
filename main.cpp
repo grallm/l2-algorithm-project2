@@ -263,8 +263,19 @@ datalistes initT(int nb){
   // Fin
 }
 
+// 
+/** Préconditions
+ * mono.nbmono < capa
+ */
+void ajouterFin(p_data chain, datalistes & mono){
+  // On ajoute la chaîne si le tableau n'est pas plein
+  if(mono.nbmono < mono.capa){
+    mono.monotonies[mono.nbmono] = chain;
+    mono.nbmono++;
+  }
+}
+
 /* TODO
-void ajouterFin(p_data chain,datalistes & mono)
 void affT(datalistes mono)
 p_data suppressionFin(datalistes & mono)
 p_data suppressionTotale(datalistes & mono)
@@ -332,4 +343,11 @@ int main(){
   // ========
 
   // ==== Partie B ====
+  // init() et ajouterFin()
+  p_data chain = nullptr;
+  chain = ajoutDevant(1, chain);
+  datalistes monos = initT(5);
+  ajouterFin(chain, monos);
+  cout << monos.nbmono << " : " << monos.capa << endl; // Devrait afficher 1 : 5 Ok
+  aff(monos.monotonies[0]); // Devrait afficher la chaîne chain, donc 1; Ok
 }
