@@ -275,6 +275,15 @@ void ajouterFin(p_data chain, datalistes & mono){
   }
 }
 
+// Affiche sur chaque ligne les valeurs d'une case
+void affT(datalistes mono){
+  for (int i = 0; i < mono.nbmono; i++)
+  {
+    aff(mono.monotonies[i]);
+  }
+  cout << endl;
+}
+
 /* TODO
 void affT(datalistes mono)
 p_data suppressionFin(datalistes & mono)
@@ -344,10 +353,16 @@ int main(){
 
   // ==== Partie B ====
   // init() et ajouterFin()
-  p_data chain = nullptr;
-  chain = ajoutDevant(1, chain);
-  datalistes monos = initT(5);
-  ajouterFin(chain, monos);
+  /* datalistes monos = initT(5);
+  ajouterFin(ajoutDevant(1, nullptr), monos);
   cout << monos.nbmono << " : " << monos.capa << endl; // Devrait afficher 1 : 5 Ok
-  aff(monos.monotonies[0]); // Devrait afficher la chaîne chain, donc 1; Ok
+  aff(monos.monotonies[0]); // Devrait afficher la chaîne chain, donc 1; Ok */
+
+  
+  // Tests affT()
+  datalistes monos = initT(5);
+  ajouterFin(ajoutDevant(1, nullptr), monos);
+  affT(monos); // Devrait afficher la chaîne chain, donc 1; Ok
+  ajouterFin(ajoutDevant(1, ajoutDevant(2, ajoutDevant(3, nullptr))), monos);
+  affT(monos); // Devrait afficher la chaîne chain, donc 1; Ok
 }
