@@ -7,6 +7,8 @@
 using namespace std;
 
 
+// ==== Partie A ====
+
 // On utilise des ints pour tester
 typedef int DATATYPE;
 
@@ -16,10 +18,6 @@ typedef struct _datum{
 } data;
 typedef _datum * p_data; // Changed to _datum to have auto-completion (because data is ambigous)
 
-
-/** TODO
- * Garder l'ordre de saisie dans saisieNombre et saisieBorne
-*/
 
 // Affiche sur la même ligne toutes les valeurs de la chaîne
 void aff(p_data chain){
@@ -240,62 +238,98 @@ void extraireCroissance(p_data & chain, p_data & mono){
     }
     // Fin
 }
+// ==========
+
+// ==== Partie B ====
+typedef struct _datallst{
+  int capa;
+  int nbmono;
+  p_data * monotonies;
+} datalistes ;
+
+// Crée et renvoie une structure datalistes initialisée avec un tableau de nb chaînages
+datalistes initT(int nb){
+  // Variables
+  datalistes newStruct;
+
+  // Début
+  newStruct = *((datalistes *) malloc(sizeof(datalistes))); // Récupérer la valeur du pointeur datalistes créé
+
+  newStruct.capa = nb;
+  newStruct.nbmono = 0;
+  newStruct.monotonies = new p_data[nb];
+
+  return newStruct;
+  // Fin
+}
+
+/* TODO
+void ajouterFin(p_data chain,datalistes & mono)
+void affT(datalistes mono)
+p_data suppressionFin(datalistes & mono)
+p_data suppressionTotale(datalistes & mono)
+ */
+// ==========
 
 
 int main(){
-    // Tests aff() et ajoutDevant()
-    // 0-1 élément / Ok-OK
-    /* p_data test = (p_data) malloc(sizeof(data));
-    test->suiv = nullptr;
-    test->valeur = 1;
-    // Plusieurs éléments / Ok
-    test = ajoutDevant(3, ajoutDevant(2, test));
-    
-    aff(test); */
+  // ==== Partie A ====
+  // Tests aff() et ajoutDevant()
+  // 0-1 élément / Ok-OK
+  /* p_data test = (p_data) malloc(sizeof(data));
+  test->suiv = nullptr;
+  test->valeur = 1;
+  // Plusieurs éléments / Ok
+  test = ajoutDevant(3, ajoutDevant(2, test));
+  
+  aff(test); */
 
 
-    // Tests ajoutDerriere() / Ajoute bien dans l'ordre
-    /* p_data test = (p_data) malloc(sizeof(data));
-    test->suiv = nullptr;
-    test->valeur = 1;
-    test = ajoutDerriere(3, ajoutDerriere(2, test));
-    aff(test); */
-    // aff(nullptr);
-    
-    
-    // Tests saisieBorne()
-    // aff(saisieBorne(0));
+  // Tests ajoutDerriere() / Ajoute bien dans l'ordre
+  /* p_data test = (p_data) malloc(sizeof(data));
+  test->suiv = nullptr;
+  test->valeur = 1;
+  test = ajoutDerriere(3, ajoutDerriere(2, test));
+  aff(test); */
+  // aff(nullptr);
+  
+  
+  // Tests saisieBorne()
+  // aff(saisieBorne(0));
 
-    
-    // Tests saisieNombre()
-    // aff(saisieNombre(0));
-    // aff(saisieNombre(1));
-    // aff(saisieNombre(3));
-
-
-    // Tests fusion()
-    // aff(fusion(saisieNombre(1), saisieNombre(1))); // 1 seul élement par chaîne Ok
-    // aff(fusion(saisieNombre(2), saisieNombre(2))); // Plusieurs élements par chaîne Ok
-    // aff(fusion(nullptr, saisieNombre(3))); // 1 chaîne avec des éléments, l'autre pas Ok
-    // aff(fusion(saisieNombre(1), saisieNombre(3))); // 1 chaîne avec 1 élément, l'autre plusieurs Ok
-    // aff(fusion(nullptr, nullptr); // Ok
-    
-    // Tests fusionR()
-    // aff(fusionR(saisieNombre(1), saisieNombre(1))); // 1 seul élement par chaîne Ok
-    // aff(fusionR(saisieNombre(2), saisieNombre(2))); // Plusieurs élements par chaîne Ok
-    // aff(fusionR(nullptr, saisieNombre(3))); // 1 chaîne avec des éléments, l'autre pas Ok
-    // aff(fusionR(saisieNombre(1), saisieNombre(3))); // 1 chaîne avec 1 élément, l'autre plusieurs Ok
-    // aff(fusionR(nullptr, nullptr); // Ok
+  
+  // Tests saisieNombre()
+  // aff(saisieNombre(0));
+  // aff(saisieNombre(1));
+  // aff(saisieNombre(3));
 
 
-    // Tests nbCroissances()
-    // cout << nbCroissances(saisieBorne(0)) << endl;
-    // cout << nbCroissances(nullptr) << endl;
+  // Tests fusion()
+  // aff(fusion(saisieNombre(1), saisieNombre(1))); // 1 seul élement par chaîne Ok
+  // aff(fusion(saisieNombre(2), saisieNombre(2))); // Plusieurs élements par chaîne Ok
+  // aff(fusion(nullptr, saisieNombre(3))); // 1 chaîne avec des éléments, l'autre pas Ok
+  // aff(fusion(saisieNombre(1), saisieNombre(3))); // 1 chaîne avec 1 élément, l'autre plusieurs Ok
+  // aff(fusion(nullptr, nullptr); // Ok
+  
+  // Tests fusionR()
+  // aff(fusionR(saisieNombre(1), saisieNombre(1))); // 1 seul élement par chaîne Ok
+  // aff(fusionR(saisieNombre(2), saisieNombre(2))); // Plusieurs élements par chaîne Ok
+  // aff(fusionR(nullptr, saisieNombre(3))); // 1 chaîne avec des éléments, l'autre pas Ok
+  // aff(fusionR(saisieNombre(1), saisieNombre(3))); // 1 chaîne avec 1 élément, l'autre plusieurs Ok
+  // aff(fusionR(nullptr, nullptr); // Ok
 
 
-    // Tests extraireCroissance()
-    /* p_data chain1 = saisieNombre(2), chain2 = saisieNombre(2);
-    extraireCroissance(chain1, chain2);
-    aff(chain1);
-    aff(chain2); */
+  // Tests nbCroissances()
+  // cout << nbCroissances(saisieBorne(0)) << endl;
+  // cout << nbCroissances(nullptr) << endl;
+
+
+  // Tests extraireCroissance()
+  /* p_data chain1 = saisieNombre(2), chain2 = saisieNombre(2);
+  extraireCroissance(chain1, chain2);
+  aff(chain1);
+  aff(chain2); */
+  // ========
+
+  // ==== Partie B ====
 }
