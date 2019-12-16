@@ -373,8 +373,25 @@ datalistes separation(p_data & chain){
   // Fin
 }
 
+void trier(datalistes & tabmono){
+  // Variables
+  
+  // Début
+  // S'il n'y aucune monotonie
+  if(tabmono.nbmono > 0){
+    // Supprimer toutes les monotonies en partant de la fin
+    for (int i = tabmono.nbmono-1; i > 0; i--)
+    {
+      // Fusionner les 2 chaînes dans la première
+      tabmono.monotonies[i-1] = fusion(tabmono.monotonies[i-1], tabmono.monotonies[i]);
+    }
+    tabmono.nbmono = 1;
+  }
+  // Fin
+}
+
+
 /* TODO
-void trier(datalistes & tabmono)
 void trier(p_data & chain)
  */
 // ==========
@@ -442,7 +459,7 @@ int main(){
   // ========
 
   // ==== Partie B ====
-  // init() et ajouterFin()
+  // initT() et ajouterFin()
   /* datalistes monos = initT(5);
   ajouterFin(ajoutDevant(1, nullptr), monos);
   cout << monos.nbmono << " : " << monos.capa << endl; // Devrait afficher 1 : 5 Ok
@@ -490,6 +507,36 @@ int main(){
   // p_data chain = saisieNombre(4); // Essayer 1,2,1,2 --> devrait donner 1;2; / 1;2; Ok
   // p_data chain = saisieNombre(3); // Essayer 1,1,2 --> devrait donner 1;1;2; (car croissance non stricte) Ok
   // p_data chain = saisieNombre(1); // Essayer 1 --> devrait donner 1; Ok
-  p_data chain = nullptr; // Essayer sans valeurs --> devrait donner (rien) Ok
-  affT(separation(chain));
+  // p_data chain = nullptr; // Essayer sans valeurs --> devrait donner (rien) Ok
+  // affT(separation(chain));
+
+
+  // Tests trier()
+  // datalistes mono = initT(2);
+  // 2 chaînes
+  /* p_data chain1 = saisieNombre(2), chain2 = saisieNombre(2);
+  ajouterFin(chain1, mono);
+  ajouterFin(chain2, mono);
+  trier(mono);
+  affT(mono); */
+  // 0 chaîne
+  /* mono = initT(2);
+  trier(mono);
+  affT(mono); // Affiche rien Ok */
+  // 1 chaîne
+  /* mono = initT(2);
+  ajouterFin(ajoutDevant(1, nullptr), mono);
+  trier(mono);
+  affT(mono); // Affiche 1; Ok */
+  // 3 chaînes (pour ne pas voir que la première fusionnée avec 2e)
+  /* datalistes mono3 = initT(3);
+  p_data chain1 = saisieNombre(2), chain2 = saisieNombre(2), chain3 = saisieNombre(2);
+  ajouterFin(chain1, mono3);
+  ajouterFin(chain2, mono3);
+  ajouterFin(chain3, mono3);
+  trier(mono3);
+  affT(mono3); */
+
+
+  
 }
