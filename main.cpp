@@ -204,7 +204,7 @@ int nbCroissances(p_data chain){
     // Vérifier si l'on n'a pas plus de mailles
     if(chain != nullptr){
       // Si la valeur suivante est inférieure strictement on change de monotonie
-      if((*chain).suiv != nullptr && (*chain).valeur > (*(*chain).suiv).valeur){
+      if((*chain).suiv != nullptr && (*chain).valeur >= (*(*chain).suiv).valeur){
         inMonot = false;
       }
       // Maille suivante
@@ -346,12 +346,36 @@ p_data suppressionTotale(datalistes & mono){
       (*tailChain).suiv = headSuiv; // La queue de la chaîne pointe vers la tête de la chaîne suivante du tableau
     }
   }
-  // Retourner 
+  // Retourner la première monotonie avec toutes les autres en queue
   return headSuiv;
+  // Fin
+}
+// ==========
+
+// ==== Partie D ====
+// Supprime les monotonies de chain pour les mettre dans une nouvelle datalistes
+datalistes separation(p_data & chain){
+  // Variables
+  datalistes mono; // Accueille toutes les monotonies
+  p_data tempChain;
+
+  // Début
+  mono = initT(nbCroissances(chain)); // Affecter nouveau datalistes et récupérer la mémoire de la structure
+
+  for (int i = 0; i < mono.capa; i++)
+  {
+    tempChain = nullptr;
+    extraireCroissance(chain, tempChain);
+    ajouterFin(tempChain, mono);
+  }
+  
+  return mono;
   // Fin
 }
 
 /* TODO
+void trier(datalistes & tabmono)
+void trier(p_data & chain)
  */
 // ==========
 
@@ -404,8 +428,10 @@ int main(){
 
 
   // Tests nbCroissances()
-  // cout << nbCroissances(saisieBorne(0)) << endl;
-  // cout << nbCroissances(nullptr) << endl;
+  // cout << nbCroissances(saisieBorne(0)) << endl; // Saisie 0; --> Retourne 1 Ok
+  // cout << nbCroissances(saisieBorne(0)) << endl; // Saisie 1;0; --> Retourne 2 ok
+  // cout << nbCroissances(saisieBorne(0)) << endl; // Saisie 1;1;2;3;0; --> Retourne 3 Ok
+  // cout << nbCroissances(nullptr) << endl; // Retourne 0 Ok
 
 
   // Tests extraireCroissance()
@@ -441,7 +467,7 @@ int main(){
 
 
   // Tests suppressionTotale()
-  datalistes monos = initT(5);
+  /* datalistes monos = initT(5);
   // Plusieurs monotonies à supprimer
   ajouterFin(ajoutDevant(1, nullptr), monos);
   ajouterFin(ajoutDevant(1, ajoutDevant(2, nullptr)), monos);
@@ -455,5 +481,15 @@ int main(){
   ajouterFin(ajoutDevant(1, nullptr), monos);
   affT(monos); // Devrait afficher 1; Ok
   aff(suppressionTotale(monos)); // Devrait afficher 1; Ok
-  affT(monos); // Devrait rien afficher Ok
+  affT(monos); // Devrait rien afficher Ok */
+  // ========
+
+  // ==== Partie D ====    
+  // Tests separation()
+  // p_data chain = saisieNombre(3); // Essayer 1,2,3 --> devrait donner 1;2;3; Ok
+  // p_data chain = saisieNombre(4); // Essayer 1,2,1,2 --> devrait donner 1;2; / 1;2; Ok
+  // p_data chain = saisieNombre(3); // Essayer 1,1,2 --> devrait donner 1;1;2; (car croissance non stricte) Ok
+  // p_data chain = saisieNombre(1); // Essayer 1 --> devrait donner 1; Ok
+  p_data chain = nullptr; // Essayer sans valeurs --> devrait donner (rien) Ok
+  affT(separation(chain));
 }
