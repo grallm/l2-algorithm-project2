@@ -373,6 +373,7 @@ datalistes separation(p_data & chain){
   // Fin
 }
 
+// Fusionne toutes les monotonies du tableau de tabmono
 void trier(datalistes & tabmono){
   // Variables
   
@@ -390,10 +391,22 @@ void trier(datalistes & tabmono){
   // Fin
 }
 
-
-/* TODO
-void trier(p_data & chain)
- */
+// Effectue un tri de chain en utilisant une fusion multiple
+void trier(p_data & chain){
+  // Variables
+  p_data tmpChain; // Chaîne temporaire extraite
+  p_data sortedChain; // Chaîne finale
+  
+  // Début
+  sortedChain = nullptr;
+  while(chain != nullptr){
+    tmpChain = nullptr;
+    extraireCroissance(chain, tmpChain);
+    sortedChain = fusion(sortedChain, tmpChain);
+  }
+  chain = sortedChain;
+  // Fin
+}
 // ==========
 
 
@@ -511,7 +524,7 @@ int main(){
   // affT(separation(chain));
 
 
-  // Tests trier()
+  // Tests trier(datalistes)
   // datalistes mono = initT(2);
   // 2 chaînes
   /* p_data chain1 = saisieNombre(2), chain2 = saisieNombre(2);
@@ -538,5 +551,9 @@ int main(){
   affT(mono3); */
 
 
-  
+  // Tests trier(p_data)
+  p_data chain = saisieBorne(0);
+  aff(chain);
+  trier(chain);
+  aff(chain);
 }
