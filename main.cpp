@@ -324,41 +324,39 @@ p_data suppressionFin(datalistes & mono){
 p_data suppressionTotale(datalistes & mono){
   // Variables
   p_data tailChain; // Permet d'allaer chercher la queue de la chaîne actuelle pour ajouter la tête de la suivante
+  p_data headSuiv; // Permet de sauvegarder la tête de la monotonies suivante
   
   // Début
-  if(mono.nbmono > 0){
-    /* for (int i = mono.nbmono-1; i > 0; i--)
-    {
-      tailChain = mono.monotonies[i];
-      // On cherche la queue de la chaîne;
-      while ((*tailChain).suiv != nullptr)
-      {
-        tailChain = (*tailChain).suiv;
-      }
-      (*tailChain).suiv = mono.monotonies[i+1]; // La queue de la chaîne pointe vers la tête de la chaîne suivante du tableau
-      
-      mono.nbmono--;
-    }
-    mono.nbmono--;
-    return mono.monotonies[0]; // On retourne le premier élément du tableau qui est "supprimé" */
-
-    
-    for (int i = 0; i < mono.nbmono-1; i++)
-    {
-      tailChain = mono.monotonies[i];
-      // On cherche la queue de la chaîne;
-      while ((*tailChain).suiv != nullptr)
-      {
-        tailChain = (*tailChain).suiv;
-      }
-      (*tailChain).suiv = mono.monotonies[i+1]; // La queue de la chaîne pointe vers la tête de la chaîne suivante du tableau
-      
-      mono.nbmono--;
-    }
-    mono.nbmono = 0;
-    return mono.monotonies[0]; // On retourne le premier élément du tableau qui est "supprimé"
+  // S'il n'y aucune monotonie
+  if(mono.nbmono == 0){
+    return nullptr;
   }
-  return nullptr;
+
+  // Supprimer toutes les monotonies en partant de la fin
+  for (int i = mono.nbmono; i > 0; i--)
+  {
+    // cout << i << endl;
+    // aff(mono.monotonies[i-1]);
+    // aff(mono.monotonies[i]);
+    // cout << endl<< endl;
+    headSuiv = mono.monotonies[i-1]; // Sauvegarder la tête de la monotonies suivante
+    // cout << "i" << endl;
+    tailChain = suppressionFin(mono); // Supprimer la dernière monotonie et récupérer la précédente
+    // cout << "i" << endl;
+    // aff(tailChain);
+    if(tailChain != nullptr){
+      // On cherche la queue de la chaîne;
+      while (tailChain != nullptr && (*tailChain).suiv != nullptr)
+      {
+        // cout << "-i" << endl;
+        tailChain = (*tailChain).suiv;
+      }
+      // cout << "i" << endl;
+      (*tailChain).suiv = headSuiv; // La queue de la chaîne pointe vers la tête de la chaîne suivante du tableau
+    }
+  }
+  // Retourner 
+  return headSuiv;
   // Fin
 }
 
@@ -453,16 +451,18 @@ int main(){
 
   // Tests suppressionTotale()
   datalistes monos = initT(5);
+  // Plusieurs monotonies à supprimer
   ajouterFin(ajoutDevant(1, nullptr), monos);
   ajouterFin(ajoutDevant(1, ajoutDevant(2, nullptr)), monos);
   ajouterFin(ajoutDevant(1, ajoutDevant(2, ajoutDevant(3, nullptr))), monos);
   affT(monos); // Devrait afficher 1;, 1;2; et 1;2;3; Ok
   aff(suppressionTotale(monos)); // Devrait afficher 1;1;2;1;2;3; Ok
   affT(monos); // Devrait rien afficher Ok
+  // Aucune monotonie à supprimer
   aff(suppressionTotale(monos)); // Devrait rien Ok
+  // 1 monotonie à supprimer
   ajouterFin(ajoutDevant(1, nullptr), monos);
-  affT(monos); // Devrait rien afficher
-  // cout << monos.nbmono << endl; // Devrait afficher 1 : 5 Ok
+  affT(monos); // Devrait afficher 1;
   aff(suppressionTotale(monos)); // Devrait afficher 1;
   affT(monos); // Devrait rien afficher
 }
