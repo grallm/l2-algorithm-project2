@@ -387,7 +387,7 @@ void trier(datalistes & tabmono){
     for (int i = tabmono.nbmono-1; i > 0; i--)
     {
       // Fusionner les 2 chaînes dans la première
-      tabmono.monotonies[i-1] = fusionR(tabmono.monotonies[i-1], tabmono.monotonies[i]); // fusion() pour la fusion non récurrente
+      tabmono.monotonies[i-1] = fusion(tabmono.monotonies[i-1], tabmono.monotonies[i]); // fusion() pour la fusion non récurrente
     }
     tabmono.nbmono = 1;
   }
@@ -408,7 +408,7 @@ void trier(p_data & chain){
   for(int i=0; i < nbCroiss; i++){ // Plus coûteux mais plus facile à calculer
     tmpChain = nullptr;
     extraireCroissance(chain, tmpChain);
-    sortedChain = fusionR(sortedChain, tmpChain); // fusion() pour la fusion non récurrente
+    sortedChain = fusion(sortedChain, tmpChain); // fusion() pour la fusion non récurrente
   }
   chain = sortedChain;
   // Fin
@@ -585,13 +585,15 @@ int main(){
   // ==== Partie E ====  
   // Tests generateChain()
   /* srand(time(NULL));
-  aff(generateChain(15, 0, 9)); // Doit retourner une chaîne aléatoire */
+  p_data chain = generateChain(15, 0, 9);
+  aff(chain); // Doit retourner une chaîne aléatoire
+  cout << nbCroissances(chain)<< endl; */
 
 
-  // Calcul pratique du coût temporel de trier(p_data)
-  srand(time(NULL)); // Générer un seed pour avoir une séquence aléatoire
-  cout << "n" << TAB<< "nb monotonies" << TAB << "temps"  <<  endl ;
-  int nMin = 1000, nMax = 1500, pas = 5; // Intervalle de longueur de la chaîne
+  // Calcul pratique du coût temporel de trier(p_data) avec une génération d'entiers
+  /* srand(time(NULL)); // Générer un seed pour avoir une séquence aléatoire
+  cout << "Longueur" << TAB << "Nombre monotonies" << TAB << "Temps"  <<  endl ;
+  int nMin = 10, nMax = 3000, pas = 10; // Intervalle de longueur de la chaîne
   int valMin = 0, valMax = 9; // Intervalle de valeurs de la chaîne
   for (int i = nMin; i <= nMax; i+=pas)
   {
@@ -604,7 +606,22 @@ int main(){
     trier(chain);
     STOP;
 
-    cout << i << TAB << nbMonos << TAB << (long) TEMPS << TAB << endl;
-  }
+    cout << i << TAB << nbMonos << TAB << (long) TEMPS << endl;
+  } */
+
+
+  // Calcul pratique du coût temporel de trier(p_data) avec une insertions de DATATYPE
+  int nbVal = 8; // Nombre de valeurs que l'on veut insérer (depuis un fichier par exemple)
+
+  p_data chain = saisieNombre(nbVal);
   
+  cout << "Longueur" << TAB << "Nombre monotonies" << TAB << "Temps"  <<  endl ;
+  int nbMonos = nbCroissances(chain);
+
+  // Temps que prends trier(p_data)
+  START;
+  trier(chain);
+  STOP;
+
+  cout << nbVal << TAB << nbMonos << TAB << (long) TEMPS << endl;
 }
