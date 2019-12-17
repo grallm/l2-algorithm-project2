@@ -401,7 +401,8 @@ void trier(p_data & chain){
   // Début
   sortedChain = nullptr;
   nbCroiss = nbCroissances(chain);
-  for(int i=0; i < nbCroiss; i++){
+  // while(chain != nullptr){ // Moins coûteux mais plus compliqué de calculer le coût
+  for(int i=0; i < nbCroiss; i++){ // Plus coûteux mais plus facile à calculer
     tmpChain = nullptr;
     extraireCroissance(chain, tmpChain);
     sortedChain = fusion(sortedChain, tmpChain);
