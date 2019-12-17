@@ -396,10 +396,12 @@ void trier(p_data & chain){
   // Variables
   p_data tmpChain; // Chaîne temporaire extraite
   p_data sortedChain; // Chaîne finale
+  int nbCroiss; // Fin de la boucle for
   
   // Début
   sortedChain = nullptr;
-  while(chain != nullptr){
+  nbCroiss = nbCroissances(chain);
+  for(int i=0; i < nbCroiss; i++){
     tmpChain = nullptr;
     extraireCroissance(chain, tmpChain);
     sortedChain = fusion(sortedChain, tmpChain);
@@ -553,7 +555,7 @@ int main(){
 
   // Tests trier(p_data)
   p_data chain = saisieBorne(0);
-  aff(chain);
+  aff(chain); // Chaîne non triée
   trier(chain);
-  aff(chain);
+  aff(chain); // Chaîne triée
 }
