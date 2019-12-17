@@ -3,6 +3,9 @@
 
 #include <iostream>
 #include <stdio.h>
+#include "outilsmesure.hpp"
+#include <stdlib.h> // Random
+#include <time.h> // Random
 
 using namespace std;
 
@@ -33,7 +36,7 @@ void aff(p_data chain){
     // Fin
 }
 
-// Ajouter une maille en tête
+// Ajouter une maille en tête et retourne la nouvelle chaîne (nouveau pointeur vers la tête)
 p_data ajoutDevant(DATATYPE uneval, p_data chain){
     // Variables
     p_data maille;
@@ -384,7 +387,7 @@ void trier(datalistes & tabmono){
     for (int i = tabmono.nbmono-1; i > 0; i--)
     {
       // Fusionner les 2 chaînes dans la première
-      tabmono.monotonies[i-1] = fusion(tabmono.monotonies[i-1], tabmono.monotonies[i]);
+      tabmono.monotonies[i-1] = fusionR(tabmono.monotonies[i-1], tabmono.monotonies[i]); // fusion() pour la fusion non récurrente
     }
     tabmono.nbmono = 1;
   }
@@ -405,9 +408,27 @@ void trier(p_data & chain){
   for(int i=0; i < nbCroiss; i++){ // Plus coûteux mais plus facile à calculer
     tmpChain = nullptr;
     extraireCroissance(chain, tmpChain);
-    sortedChain = fusion(sortedChain, tmpChain);
+    sortedChain = fusionR(sortedChain, tmpChain); // fusion() pour la fusion non récurrente
   }
   chain = sortedChain;
+  // Fin
+}
+// ==========
+
+// ==== Partie D ====  
+// Permet de générer une chaîne d'entiers contenant len entiers de valeur variant entre min et max (inclus)
+p_data generateChain(int len, int min, int max){
+  // Variables
+  p_data chain;
+
+  // Début
+  chain = nullptr;
+  for (int i = 0; i < len; i++)
+  {
+    chain = ajoutDevant(rand() % (max-min + 1) + min, chain);
+  }
+  
+  return chain;
   // Fin
 }
 // ==========
@@ -555,8 +576,35 @@ int main(){
 
 
   // Tests trier(p_data)
-  p_data chain = saisieBorne(0);
+  /* p_data chain = saisieBorne(0);
   aff(chain); // Chaîne non triée
   trier(chain);
-  aff(chain); // Chaîne triée
+  aff(chain); // Chaîne triée */
+  // ========
+
+  // ==== Partie E ====  
+  // Tests generateChain()
+  /* srand(time(NULL));
+  aff(generateChain(15, 0, 9)); // Doit retourner une chaîne aléatoire */
+
+
+  // Calcul pratique du coût temporel de trier(p_data)
+  srand(time(NULL)); // Générer un seed pour avoir une séquence aléatoire
+  cout << "n" << TAB<< "nb monotonies" << TAB << "temps"  <<  endl ;
+  int nMin = 1000, nMax = 1500, pas = 5; // Intervalle de longueur de la chaîne
+  int valMin = 0, valMax = 9; // Intervalle de valeurs de la chaîne
+  for (int i = nMin; i <= nMax; i+=pas)
+  {
+    p_data chain = generateChain(i, valMin, valMax);
+    
+    int nbMonos = nbCroissances(chain);
+
+    // Temps que prends trier(p_data)
+    START;
+    trier(chain);
+    STOP;
+
+    cout << i << TAB << nbMonos << TAB << (long) TEMPS << TAB << endl;
+  }
+  
 }
