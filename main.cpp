@@ -119,39 +119,39 @@ p_data fusion(p_data head, p_data middle){
     right = middle;
     
     // Placer la tête de la chaîne fusionné sur la plus petite valeur des 2 têtes
-    if((*head).valeur > (*middle).valeur){
+    if(head->valeur > middle->valeur){
       head = middle;
-      right = (*right).suiv;
+      right = right->suiv;
     }else{
-      left = (*left).suiv;
+      left = left->suiv;
     }
     actual = head;
 
     // Tant qu'il reste des éléments dans les 2 chaînes on ajoute la plus petite valeur et on décale
     while (left != nullptr && right != nullptr)
     {
-      if((*left).valeur < (*right).valeur){
-        (*actual).suiv = left;
-        left = (*left).suiv;
+      if(left->valeur < right->valeur){
+        actual->suiv = left;
+        left = left->suiv;
       }else{
-        (*actual).suiv = right;
-        right = (*right).suiv;
+        actual->suiv = right;
+        right = right->suiv;
       }
-      actual = (*actual).suiv;
+      actual = actual->suiv;
     }
 
     // On ajoute tous les éléments de la chaîne dans laquelle il en reste
     while (left != nullptr)
     {
-      (*actual).suiv = left;
-      left = (*left).suiv;
-      actual = (*actual).suiv;
+      actual->suiv = left;
+      left = left->suiv;
+      actual = actual->suiv;
     }
     while (right != nullptr)
     {
-      (*actual).suiv = right;
-      right = (*right).suiv;
-      actual = (*actual).suiv;
+      actual->suiv = right;
+      right = right->suiv;
+      actual = actual->suiv;
     }
 
     return head;
@@ -174,13 +174,13 @@ p_data fusionR(p_data head, p_data middle){
 
   }else{
     if(head == nullptr){
-      return ajoutDevant((*middle).valeur, fusionR(head, (*middle).suiv));
+      return ajoutDevant(middle->valeur, fusionR(head, middle->suiv));
     }else if(middle == nullptr){
-      return ajoutDevant((*head).valeur, fusionR(middle, (*head).suiv));
-    }else if((*head).valeur < (*middle).valeur){
-      return ajoutDevant((*head).valeur, fusionR((*head).suiv, middle));
+      return ajoutDevant(head->valeur, fusionR(middle, head->suiv));
+    }else if(head->valeur < middle->valeur){
+      return ajoutDevant(head->valeur, fusionR(head->suiv, middle));
     }else{
-      return ajoutDevant((*middle).valeur, fusionR((*middle).suiv, head));
+      return ajoutDevant(middle->valeur, fusionR(middle->suiv, head));
     }
   }
   // Fin
@@ -207,11 +207,11 @@ int nbCroissances(p_data chain){
     // Vérifier si l'on n'a pas plus de mailles
     if(chain != nullptr){
       // Si la valeur suivante est inférieure strictement on change de monotonie
-      if((*chain).suiv != nullptr && (*chain).valeur >= (*(*chain).suiv).valeur){
+      if(chain->suiv != nullptr && chain->valeur >= chain->suiv->valeur){
         inMonot = false;
       }
       // Maille suivante
-      chain = (*chain).suiv;
+      chain = chain->suiv;
     }
   }
   
@@ -230,13 +230,13 @@ void extraireCroissance(p_data & chain, p_data & mono){
     // Si la chaîne est vide on ne fait rien
     if(chain != nullptr){
       // Aller jusqu'à la fin de la monotonie
-      while ((*chain).suiv != nullptr && (*chain).valeur <= (*(*chain).suiv).valeur)
+      while (chain->suiv != nullptr && chain->valeur <= chain->suiv->valeur)
       {
-        chain = (*chain).suiv;
+        chain = chain->suiv;
       }
       tailRemChain = chain; // Récupérer la dernière maille
-      chain = (*chain).suiv; // Le retirer de la chaîne chain
-      (*tailRemChain).suiv = mono; // Ajouter le chaînon à mono
+      chain = chain->suiv; // Le retirer de la chaîne chain
+      tailRemChain->suiv = mono; // Ajouter le chaînon à mono
       mono = headRemChain; // Retourner le nouveau mono
     }
     // Fin
@@ -342,11 +342,11 @@ p_data suppressionTotale(datalistes & mono){
     tailChain = suppressionFin(mono); // Supprimer la dernière monotonie et récupérer la précédente
     if(tailChain != nullptr){
       // On cherche la queue de la chaîne;
-      while (tailChain != nullptr && (*tailChain).suiv != nullptr)
+      while (tailChain != nullptr && tailChain->suiv != nullptr)
       {
-        tailChain = (*tailChain).suiv;
+        tailChain = tailChain->suiv;
       }
-      (*tailChain).suiv = headSuiv; // La queue de la chaîne pointe vers la tête de la chaîne suivante du tableau
+      tailChain->suiv = headSuiv; // La queue de la chaîne pointe vers la tête de la chaîne suivante du tableau
     }
   }
   // Retourner la première monotonie avec toutes les autres en queue
@@ -615,7 +615,7 @@ int main(){
 
   p_data chain = saisieNombre(nbVal);
   
-  cout << "Longueur" << TAB << "Nombre monotonies" << TAB << "Temps"  <<  endl ;
+  cout << endl << "Longueur" << TAB << "Nombre monotonies" << TAB << "Temps"  <<  endl ;
   int nbMonos = nbCroissances(chain);
 
   // Temps que prends trier(p_data)
