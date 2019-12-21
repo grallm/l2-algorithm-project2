@@ -106,7 +106,7 @@ p_data saisieNombre(int nb){
  * Les 2 chaînes doivent être triées en ordre croissant
 */
 /** Postconditions
- * Le pointeur passées en 2e argument de la fonction renvoie vers une maille de la chaîne résultante, il n'est donc plus utilisable comme tête de chaîne
+ * Le pointeur passé en 2e argument de la fonction renvoie vers une maille de la chaîne résultante, il n'est donc plus utilisable comme tête de chaîne
 */
 p_data fusion(p_data head, p_data middle){
   // Variables
@@ -199,13 +199,13 @@ int nbCroissances(p_data chain){
   // Tester toutes les mailles
   while (chain != nullptr)
   {
-    // Si on commence une nouvelle monotonie, si c'est le cas on ajoute 1 au compteur
-    if(!inMonot){
-      inMonot = true;
-      nb++;
-    }
     // Vérifier si l'on n'a pas plus de mailles
     if(chain != nullptr){
+      // Si on commence une nouvelle monotonie, si c'est le cas on ajoute 1 au compteur
+      if(!inMonot){
+        inMonot = true;
+        nb++;
+      }
       // Si la valeur suivante est inférieure strictement on change de monotonie
       if(chain->suiv != nullptr && chain->valeur >= chain->suiv->valeur){
         inMonot = false;
@@ -484,8 +484,8 @@ int main(){
   // Tests nbCroissances()
   // cout << nbCroissances(saisieBorne(0)) << endl; // Saisie 0; --> Retourne 1 Ok
   // cout << nbCroissances(saisieBorne(0)) << endl; // Saisie 1;0; --> Retourne 2 ok
-  // cout << nbCroissances(saisieBorne(0)) << endl; // Saisie 1;1;2;3;0; --> Retourne 3 Ok
-  // cout << nbCroissances(nullptr) << endl; // Retourne 0 Ok
+  cout << nbCroissances(saisieBorne(0)) << endl; // Saisie 1;1;2;3;0; --> Retourne 3 Ok
+  cout << nbCroissances(nullptr) << endl; // Retourne 0 Ok
 
 
   // Tests extraireCroissance()
@@ -611,7 +611,7 @@ int main(){
 
 
   // Calcul pratique du coût temporel de trier(p_data) avec une insertions de DATATYPE
-  int nbVal = 8; // Nombre de valeurs que l'on veut insérer (depuis un fichier par exemple)
+  /* int nbVal = 8; // Nombre de valeurs que l'on veut insérer (depuis un fichier par exemple)
 
   p_data chain = saisieNombre(nbVal);
   
@@ -623,5 +623,5 @@ int main(){
   trier(chain);
   STOP;
 
-  cout << nbVal << TAB << nbMonos << TAB << (long) TEMPS << endl;
+  cout << nbVal << TAB << nbMonos << TAB << (long) TEMPS << endl; */
 }
