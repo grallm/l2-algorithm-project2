@@ -167,10 +167,8 @@ p_data fusionR(p_data head, p_data middle){
 
   }else{
     if(head == nullptr){
-      middle->suiv = fusionR(head, middle->suiv);
       return middle;
     }else if(middle == nullptr){
-      head->suiv = fusionR(middle, head->suiv);
       return head;
     }else if(head->valeur < middle->valeur){
       head->suiv = fusionR(head->suiv, middle);
