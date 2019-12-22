@@ -140,18 +140,11 @@ p_data fusion(p_data head, p_data middle){
       actual = actual->suiv;
     }
 
-    // On ajoute tous les éléments de la chaîne dans laquelle il en reste
-    while (left != nullptr)
-    {
+    // On ajoute toute la suite de la chaîne dans laquelle il reste des éléments
+    if(left != nullptr){
       actual->suiv = left;
-      left = left->suiv;
-      actual = actual->suiv;
-    }
-    while (right != nullptr)
-    {
+    }else if(right != nullptr){
       actual->suiv = right;
-      right = right->suiv;
-      actual = actual->suiv;
     }
 
     return head;
@@ -467,11 +460,11 @@ int main(){
 
 
   // Tests fusion()
-  // aff(fusion(saisieNombre(1), saisieNombre(1))); // 1 seul élement par chaîne Ok
-  // aff(fusion(saisieNombre(2), saisieNombre(2))); // Plusieurs élements par chaîne Ok
-  // aff(fusion(nullptr, saisieNombre(3))); // 1 chaîne avec des éléments, l'autre pas Ok
-  // aff(fusion(saisieNombre(1), saisieNombre(3))); // 1 chaîne avec 1 élément, l'autre plusieurs Ok
-  // aff(fusion(nullptr, nullptr); // Ok
+  aff(fusion(saisieNombre(1), saisieNombre(1))); // 1 seul élement par chaîne Ok
+  aff(fusion(saisieNombre(2), saisieNombre(2))); // Plusieurs élements par chaîne Ok
+  aff(fusion(nullptr, saisieNombre(3))); // 1 chaîne avec des éléments, l'autre pas Ok
+  aff(fusion(saisieNombre(1), saisieNombre(3))); // 1 chaîne avec 1 élément, l'autre plusieurs Ok
+  aff(fusion(nullptr, nullptr)); // Ok
   
   // Tests fusionR()
   // aff(fusionR(saisieNombre(1), saisieNombre(1))); // 1 seul élement par chaîne Ok
@@ -484,8 +477,8 @@ int main(){
   // Tests nbCroissances()
   // cout << nbCroissances(saisieBorne(0)) << endl; // Saisie 0; --> Retourne 1 Ok
   // cout << nbCroissances(saisieBorne(0)) << endl; // Saisie 1;0; --> Retourne 2 ok
-  cout << nbCroissances(saisieBorne(0)) << endl; // Saisie 1;1;2;3;0; --> Retourne 3 Ok
-  cout << nbCroissances(nullptr) << endl; // Retourne 0 Ok
+  // cout << nbCroissances(saisieBorne(0)) << endl; // Saisie 1;1;2;3;0; --> Retourne 3 Ok
+  // cout << nbCroissances(nullptr) << endl; // Retourne 0 Ok
 
 
   // Tests extraireCroissance()
