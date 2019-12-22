@@ -167,13 +167,17 @@ p_data fusionR(p_data head, p_data middle){
 
   }else{
     if(head == nullptr){
-      return ajoutDevant(middle->valeur, fusionR(head, middle->suiv));
+      middle->suiv = fusionR(head, middle->suiv);
+      return middle;
     }else if(middle == nullptr){
-      return ajoutDevant(head->valeur, fusionR(middle, head->suiv));
+      head->suiv = fusionR(middle, head->suiv);
+      return head;
     }else if(head->valeur < middle->valeur){
-      return ajoutDevant(head->valeur, fusionR(head->suiv, middle));
+      head->suiv = fusionR(head->suiv, middle);
+      return head;
     }else{
-      return ajoutDevant(middle->valeur, fusionR(middle->suiv, head));
+      middle->suiv = fusionR(middle->suiv, head);
+      return middle;
     }
   }
   // Fin
@@ -460,18 +464,18 @@ int main(){
 
 
   // Tests fusion()
-  aff(fusion(saisieNombre(1), saisieNombre(1))); // 1 seul élement par chaîne Ok
-  aff(fusion(saisieNombre(2), saisieNombre(2))); // Plusieurs élements par chaîne Ok
-  aff(fusion(nullptr, saisieNombre(3))); // 1 chaîne avec des éléments, l'autre pas Ok
-  aff(fusion(saisieNombre(1), saisieNombre(3))); // 1 chaîne avec 1 élément, l'autre plusieurs Ok
-  aff(fusion(nullptr, nullptr)); // Ok
+  // aff(fusion(saisieNombre(1), saisieNombre(1))); // 1 seul élement par chaîne Ok
+  // aff(fusion(saisieNombre(2), saisieNombre(2))); // Plusieurs élements par chaîne Ok
+  // aff(fusion(nullptr, saisieNombre(3))); // 1 chaîne avec des éléments, l'autre pas Ok
+  // aff(fusion(saisieNombre(1), saisieNombre(3))); // 1 chaîne avec 1 élément, l'autre plusieurs Ok
+  // aff(fusion(nullptr, nullptr)); // Ok
   
   // Tests fusionR()
-  // aff(fusionR(saisieNombre(1), saisieNombre(1))); // 1 seul élement par chaîne Ok
-  // aff(fusionR(saisieNombre(2), saisieNombre(2))); // Plusieurs élements par chaîne Ok
-  // aff(fusionR(nullptr, saisieNombre(3))); // 1 chaîne avec des éléments, l'autre pas Ok
-  // aff(fusionR(saisieNombre(1), saisieNombre(3))); // 1 chaîne avec 1 élément, l'autre plusieurs Ok
-  // aff(fusionR(nullptr, nullptr); // Ok
+  aff(fusionR(saisieNombre(1), saisieNombre(1))); // 1 seul élement par chaîne Ok
+  aff(fusionR(saisieNombre(2), saisieNombre(2))); // Plusieurs élements par chaîne Ok
+  aff(fusionR(nullptr, saisieNombre(3))); // 1 chaîne avec des éléments, l'autre pas Ok
+  aff(fusionR(saisieNombre(1), saisieNombre(3))); // 1 chaîne avec 1 élément, l'autre plusieurs Ok
+  aff(fusionR(nullptr, nullptr)); // Ok
 
 
   // Tests nbCroissances()
