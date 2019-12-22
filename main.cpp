@@ -158,6 +158,12 @@ p_data fusion(p_data head, p_data middle){
 // Fusion de 2 chaînes triées en ordre croissant
 // Retourne la tête de la chaîne résultante triée
 // Algorithme récursif
+/** Préconditions
+ * Les 2 chaînes doivent être triées en ordre croissant
+*/
+/** Postconditions
+ * Le pointeur passé en 2e argument de la fonction renvoie vers une maille de la chaîne résultante, il n'est donc plus utilisable comme tête de chaîne
+*/
 p_data fusionR(p_data head, p_data middle){
   // Variables
 
@@ -214,7 +220,11 @@ int nbCroissances(p_data chain){
   // Fin
 }
 
-// Place dans le chaînage mono la première monotonie croissante de chain et l’en retire
+// Place en tête dans le chaînage mono la première monotonie croissante de chain et l’en retire
+/** Postconditions
+ * chain et mono sont modifiées, elles n'ont plus la même tête, sauf si chain est nullptr
+ * chain peut être nullptr s'il n'y avait qu'une seule monotonie
+ */
 void extraireCroissance(p_data & chain, p_data & mono){
     // Variables
     p_data headRemChain; // Tête du chaînon qui va être retiré
@@ -261,9 +271,12 @@ datalistes initT(int nb){
   // Fin
 }
 
-// 
+// Ajoute la maille pointée par chain dans le tableau de mono
 /** Préconditions
  * mono.nbmono < capa
+ */
+/** Postconditons
+ * la maille n'est pas ajoutée dans le tableau si la précondition n'est pas respectée (car plus de place dans le tableau)
  */
 void ajouterFin(p_data chain, datalistes & mono){
   // Variables
@@ -295,6 +308,7 @@ void affT(datalistes mono){
 
 // Supprime
 /** Préconditions
+ * mono doit être initialisé
  * mono.nbmono > 0
  */
 /** Postconditions
